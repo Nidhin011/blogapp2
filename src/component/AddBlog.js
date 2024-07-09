@@ -1,25 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addBlog, updateBlog } from '../redux/blogSlice';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Container, TextField, Button } from '@mui/material';
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { addBlog, updateBlog } from "../redux/blogSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { Container, TextField, Button } from "@mui/material";
 
 const AddBlog = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Accessing Redux state
-  const blogs = useSelector(state => state.blog);
-  const existingBlog = blogs.find(blog => blog.id === Number(id)) || null;
+ 
+  const blogs = useSelector((state) => state.blog);
+  const existingBlog = blogs.find((blog) => blog.id === Number(id)) || null;
 
-  // State variables for form inputs and image preview
-  const [title, setTitle] = useState(existingBlog ? existingBlog.title : '');
-  const [description, setDescription] = useState(existingBlog ? existingBlog.description : '');
+  
+  const [title, setTitle] = useState(existingBlog ? existingBlog.title : "");
+  const [description, setDescription] = useState(
+    existingBlog ? existingBlog.description : ""
+  );
   const [coverImage, setCoverImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(existingBlog ? existingBlog.coverImage : null);
+  const [imagePreview, setImagePreview] = useState(
+    existingBlog ? existingBlog.coverImage : null
+  );
 
-  // Effect to update state if an existing blog is loaded
+
   useEffect(() => {
     if (existingBlog) {
       setTitle(existingBlog.title);
@@ -28,7 +32,7 @@ const AddBlog = () => {
     }
   }, [existingBlog]);
 
-  // Handle image selection
+ 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -37,7 +41,7 @@ const AddBlog = () => {
     }
   };
 
-  // Handle form submission
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -45,10 +49,10 @@ const AddBlog = () => {
       id: existingBlog ? existingBlog.id : Date.now(),
       title,
       description,
-      coverImage: imagePreview, // Use imagePreview as it holds the URL for the image
+      coverImage: imagePreview, 
     };
 
-    console.log('Submitting blog:', blogData);
+    console.log("Submitting blog:", blogData);
 
     if (existingBlog) {
       dispatch(updateBlog(blogData));
@@ -56,7 +60,7 @@ const AddBlog = () => {
       dispatch(addBlog(blogData));
     }
 
-    navigate('/layout/blogList') // Redirect to home after submission
+    navigate("/layout/blogList"); 
   };
 
   return (
@@ -84,13 +88,17 @@ const AddBlog = () => {
           type="file"
           accept="image/*"
           onChange={handleImageChange}
-          style={{ margin: '10px 0' }}
+          style={{ margin: "10px 0" }}
         />
         {imagePreview && (
-          <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '200px', marginTop: '10px' }} />
+          <img
+            src={imagePreview}
+            alt="Preview"
+            style={{ maxWidth: "100%", maxHeight: "200px", marginTop: "10px" }}
+          />
         )}
         <Button type="submit" variant="contained" color="primary">
-          {existingBlog ? 'Update' : 'Add'} Blog
+          {existingBlog ? "Update" : "Add"} Blog
         </Button>
       </form>
     </Container>

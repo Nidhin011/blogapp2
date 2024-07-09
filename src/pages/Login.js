@@ -17,7 +17,7 @@ const Login = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       dispatch(setUser(userCredential.user));
-      navigate('/layout/blogList'); // Navigate to blogList after successful login
+      navigate('/layout/blogList'); 
     } catch (error) {
       console.error('Error logging in:', error);
     }
